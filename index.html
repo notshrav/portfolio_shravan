@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shravan Mittal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="sidebar">
+        <h2>Shravan</h2>
+
+        <ul>
+            <li onclick="showSection('about')" class="active">About</li>
+            <li onclick="showSection('project')">Project</li>
+            <li onclick="showSection('certificates')">Certificates</li>
+        </ul>
+
+        <div class="contact-box">
+            <p>📧 shravanmittal117@gmail.com</p>
+            <p>📱 9591046110</p>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <div class="content-area">
+
+            <section class="hero">
+                <img src="assets/pfp.png" class="pfp">
+                <h1>Shravan Mittal</h1>
+                <p class="typing"></p>
+            </section>
+
+            <section id="about" class="content active">
+                <h2>About Me</h2>
+                <p>
+                    I'm a BTech CSE fresher at VIT Vellore with a strong interest in building impactful
+                    technology. I enjoy solving real-world problems through code and continuously push
+                    myself to learn beyond the classroom.
+                </p>
+                <p>
+                    Currently, I'm focused on frontend development while also exploring different domains
+                    within computer science. I'm open to collaborations and actively looking to work on
+                    projects that create real value.
+                </p>
+            </section>
+
+            <section id="project" class="content">
+                <h2>Nirmaya</h2>
+                <p>
+                    A healthcare-focused project that summarizes patient medical records into concise
+                    insights for doctors.
+                </p>
+
+                <a href="https://github.com/Ashmit-Pathak018/Niramaya" target="_blank" class="btn">
+                    View on GitHub
+                </a>
+
+                <img src="assets/vit_certificate.png" class="cert">
+            </section>
+
+            <!-- CERTIFICATES -->
+            <section id="certificates" class="content">
+                <h2>Certificates</h2>
+
+                <div class="cert-container">
+
+                    <!-- CODING -->
+                    <div class="cert-column">
+                        <h3>Coding</h3>
+                        <img src="assets/vit_certificate.png">
+                    </div>
+
+                    <!-- MUSIC SLIDESHOW -->
+                    <div class="cert-column">
+                        <h3>Music</h3>
+
+                        <div class="slider">
+                            <button onclick="prevSlide()">‹</button>
+
+                            <img id="slide" src="assets/music1.png">
+
+                            <button onclick="nextSlide()">›</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+
+        </div>
+
+        <div class="right-panel">
+            <div class="card">
+                <h3>Currently</h3>
+                <p>Learning Frontend Development</p>
+            </div>
+
+            <div class="card">
+                <h3>Looking For</h3>
+                <p>Collaborations & Projects</p>
+            </div>
+
+            <div class="card">
+                <h3>Focus</h3>
+                <p>Building Real Applications</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
