@@ -93,23 +93,35 @@ document.querySelectorAll(".portrait-decor").forEach(decor => {
     if (event.button !== 0) return;
     event.preventDefault();
 
+    const parent = decor.offsetParent;
     const startX = event.clientX;
     const startY = event.clientY;
     const startLeft = decor.offsetLeft;
     const startTop = decor.offsetTop;
+    const frozenTranslate = getComputedStyle(decor).translate;
+
     decor.style.left = `${startLeft}px`;
     decor.style.top = `${startTop}px`;
     decor.style.right = "auto";
     decor.style.bottom = "auto";
+    if (frozenTranslate !== "none") decor.style.translate = frozenTranslate;
+    decor.classList.remove("is-placed");
     decor.classList.add("is-dragging");
     decor.setPointerCapture(event.pointerId);
 
+    const parentTransform = getComputedStyle(parent).transform;
+    const inverseTransform = new DOMMatrixReadOnly(parentTransform === "none" ? undefined : parentTransform).inverse();
     const move = moveEvent => {
-      decor.style.left = `${startLeft + moveEvent.clientX - startX}px`;
-      decor.style.top = `${startTop + moveEvent.clientY - startY}px`;
+      const dx = moveEvent.clientX - startX;
+      const dy = moveEvent.clientY - startY;
+      const localX = inverseTransform.a * dx + inverseTransform.c * dy;
+      const localY = inverseTransform.b * dx + inverseTransform.d * dy;
+      decor.style.left = `${startLeft + localX}px`;
+      decor.style.top = `${startTop + localY}px`;
     };
     const finish = finishEvent => {
       decor.classList.remove("is-dragging");
+      decor.classList.add("is-placed");
       if (decor.hasPointerCapture(finishEvent.pointerId)) decor.releasePointerCapture(finishEvent.pointerId);
       decor.removeEventListener("pointermove", move);
       decor.removeEventListener("pointerup", finish);
