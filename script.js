@@ -93,11 +93,11 @@ document.querySelectorAll(".portrait-decor").forEach(decor => {
     if (event.button !== 0) return;
     event.preventDefault();
 
-    const parent = decor.offsetParent;
+    const parent = decor.parentElement;
     const startX = event.clientX;
     const startY = event.clientY;
-    const startLeft = decor.offsetLeft;
-    const startTop = decor.offsetTop;
+    const startLeft = decor instanceof HTMLElement ? decor.offsetLeft : parseFloat(getComputedStyle(decor).left);
+    const startTop = decor instanceof HTMLElement ? decor.offsetTop : parseFloat(getComputedStyle(decor).top);
     const frozenTranslate = getComputedStyle(decor).translate;
 
     decor.style.left = `${startLeft}px`;
