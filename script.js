@@ -94,11 +94,12 @@ document.querySelectorAll(".portrait-decor").forEach(decor => {
     event.preventDefault();
 
     const parent = decor.parentElement;
+    const style = getComputedStyle(decor);
     const startX = event.clientX;
     const startY = event.clientY;
-    const startLeft = decor instanceof HTMLElement ? decor.offsetLeft : parseFloat(getComputedStyle(decor).left);
-    const startTop = decor instanceof HTMLElement ? decor.offsetTop : parseFloat(getComputedStyle(decor).top);
-    const frozenTranslate = getComputedStyle(decor).translate;
+    const startLeft = decor instanceof HTMLElement ? decor.offsetLeft : parseCssPosition(style.left, parent.clientWidth);
+    const startTop = decor instanceof HTMLElement ? decor.offsetTop : parseCssPosition(style.top, parent.clientHeight);
+    const frozenTranslate = style.translate;
 
     decor.style.left = `${startLeft}px`;
     decor.style.top = `${startTop}px`;
@@ -107,11 +108,11 @@ document.querySelectorAll(".portrait-decor").forEach(decor => {
     if (frozenTranslate !== "none") decor.style.translate = frozenTranslate;
     decor.classList.remove("is-placed");
     decor.classList.add("is-dragging");
-    decor.setPointerCapture(event.pointerId);
 
     const parentTransform = getComputedStyle(parent).transform;
     const inverseTransform = new DOMMatrixReadOnly(parentTransform === "none" ? undefined : parentTransform).inverse();
     const move = moveEvent => {
+      if (moveEvent.pointerId !== event.pointerId) return;
       const dx = moveEvent.clientX - startX;
       const dy = moveEvent.clientY - startY;
       const localX = inverseTransform.a * dx + inverseTransform.c * dy;
@@ -120,19 +121,25 @@ document.querySelectorAll(".portrait-decor").forEach(decor => {
       decor.style.top = `${startTop + localY}px`;
     };
     const finish = finishEvent => {
+      if (finishEvent.pointerId !== event.pointerId) return;
       decor.classList.remove("is-dragging");
       decor.classList.add("is-placed");
-      if (decor.hasPointerCapture(finishEvent.pointerId)) decor.releasePointerCapture(finishEvent.pointerId);
-      decor.removeEventListener("pointermove", move);
-      decor.removeEventListener("pointerup", finish);
-      decor.removeEventListener("pointercancel", finish);
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", finish);
+      window.removeEventListener("pointercancel", finish);
     };
 
-    decor.addEventListener("pointermove", move);
-    decor.addEventListener("pointerup", finish);
-    decor.addEventListener("pointercancel", finish);
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", finish);
+    window.addEventListener("pointercancel", finish);
   });
 });
+
+function parseCssPosition(value, parentSize) {
+  const amount = parseFloat(value);
+  if (!Number.isFinite(amount)) return 0;
+  return value.trim().endsWith("%") ? amount * parentSize / 100 : amount;
+}
 loadGitHubProjects();
 let repoPositionFrame = null;
 projectCarousel.addEventListener("scroll", () => {
