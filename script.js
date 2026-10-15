@@ -87,6 +87,40 @@ async function loadGitHubProjects() {
   }
 }
 
+document.querySelectorAll(".portrait-decor").forEach(decor => {
+  decor.setAttribute("draggable", "false");
+  decor.addEventListener("pointerdown", event => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const startLeft = decor.offsetLeft;
+    const startTop = decor.offsetTop;
+    decor.style.left = `${startLeft}px`;
+    decor.style.top = `${startTop}px`;
+    decor.style.right = "auto";
+    decor.style.bottom = "auto";
+    decor.classList.add("is-dragging");
+    decor.setPointerCapture(event.pointerId);
+
+    const move = moveEvent => {
+      decor.style.left = `${startLeft + moveEvent.clientX - startX}px`;
+      decor.style.top = `${startTop + moveEvent.clientY - startY}px`;
+    };
+    const finish = finishEvent => {
+      decor.classList.remove("is-dragging");
+      if (decor.hasPointerCapture(finishEvent.pointerId)) decor.releasePointerCapture(finishEvent.pointerId);
+      decor.removeEventListener("pointermove", move);
+      decor.removeEventListener("pointerup", finish);
+      decor.removeEventListener("pointercancel", finish);
+    };
+
+    decor.addEventListener("pointermove", move);
+    decor.addEventListener("pointerup", finish);
+    decor.addEventListener("pointercancel", finish);
+  });
+});
 loadGitHubProjects();
 let repoPositionFrame = null;
 projectCarousel.addEventListener("scroll", () => {

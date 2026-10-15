@@ -53,7 +53,7 @@ button{font:inherit}
 .portrait-orbit{position:absolute;border:1px solid rgba(203,246,92,.35);border-radius:50%;pointer-events:none}
 .orbit-one{width:103%;height:88%;top:5%;left:-7%;transform:rotate(-28deg)}
 .orbit-two{width:118%;height:106%;left:-9%;top:-1%;border-color:rgba(255,112,72,.26);transform:rotate(33deg)}
-.portrait-decor{position:absolute;z-index:3;display:block;pointer-events:none;filter:drop-shadow(2px 5px 3px #0008);animation:float-decoration 4s ease-in-out infinite}
+.portrait-decor{position:absolute;z-index:3;display:block;pointer-events:auto;cursor:grab;touch-action:none;user-select:none;-webkit-user-drag:none;filter:drop-shadow(2px 5px 3px #0008);animation:float-decoration 4s ease-in-out infinite}.portrait-decor.is-dragging{cursor:grabbing;animation-play-state:paused}
 .decor-gun{left:-42px;top:17%;width:77px;color:var(--orange);rotate:-155deg;animation-delay:-.6s}
 .decor-rose{left:-32px;top:57%;width:58px;height:75px;animation-delay:-1.5s}
 .decor-pizza{left:-35px;top:37%;width:52px;height:59px;rotate:-16deg;animation-delay:-3.2s}
